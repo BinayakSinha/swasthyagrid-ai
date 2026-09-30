@@ -1,0 +1,9 @@
+import React from 'react'; import {COLOR} from './api'
+export const Chip=({v}:any)=><span className="text-xs font-semibold px-2 py-0.5 rounded text-white" style={{background:COLOR[v]||'#64748b'}}>{v}</span>
+export const Card=({title,children,className=''}:any)=><section className={'bg-white border border-slate-200 rounded-lg p-4 '+className}>{title&&<h2 className="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-3">{title}</h2>}{children}</section>
+export const Kpi=({l,v,s}:any)=><div className="bg-white border border-slate-200 rounded-lg p-4"><div className="text-xs uppercase text-slate-500">{l}</div><div className="text-2xl font-bold">{v}</div>{s&&<div className="text-xs text-slate-500">{s}</div>}</div>
+export function PhcMap({phcs,recs=[]}:any){const la=phcs.map((p:any)=>p.lat),lo=phcs.map((p:any)=>p.lon),[a,b,c,d]=[Math.min(...la),Math.max(...la),Math.min(...lo),Math.max(...lo)]
+ const x=(p:any)=>30+(p.lon-c)/(d-c||1)*540,y=(p:any)=>30+(b-p.lat)/(b-a||1)*300,by:any=Object.fromEntries(phcs.map((p:any)=>[p.id,p]))
+ return <svg viewBox="0 0 600 360" className="w-full bg-slate-50 rounded border border-slate-200"><text x="8" y="16" fontSize="10" fill="#64748b">Schematic map (set GOOGLE_MAPS_API_KEY for Google Maps)</text>
+  {recs.slice(0,4).map((r:any,i:number)=>by[r.source]&&by[r.destination]&&<line key={i} x1={x(by[r.source])} y1={y(by[r.source])} x2={x(by[r.destination])} y2={y(by[r.destination])} stroke="#2563eb" strokeWidth="2" strokeDasharray="5 3"><title>{`${r.source}→${r.destination} ${r.quantity} ${r.resource} (${r.distance_km} km)`}</title></line>)}
+  {phcs.map((p:any)=><a key={p.id} href={'#/phcs/'+p.id}><circle cx={x(p)} cy={y(p)} r="8" fill={COLOR[p.risk]} stroke="#fff" strokeWidth="2"><title>{`${p.name} · ${p.district} · ${p.risk} · beds ${p.beds-p.occupied_beds}/${p.beds} · staff ${p.staff_count}`}</title></circle></a>)}</svg>}
