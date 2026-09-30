@@ -1,0 +1,5 @@
+.env
+*.db
+*.json.key
+node_modules/
+__pycache__/
